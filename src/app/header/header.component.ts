@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  @Output('routeSelected') routeEmitter = new EventEmitter<string>()
+  
   collapsed = true;
   
   constructor() { }
@@ -14,4 +16,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onRecipesClicked() {
+    this.routeEmitter.emit('recipes');
+  }
+
+  onShoppingListClicked() {
+    this.routeEmitter.emit('shopping-list');
+  }
 }
