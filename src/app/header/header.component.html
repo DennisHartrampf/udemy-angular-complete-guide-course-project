@@ -8,12 +8,19 @@
     </div>
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/recipes" >Recipes</a></li>
+        <li routerLinkActive="active"><a routerLink="/recipes">Recipes</a></li>
         <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="https://github.com/DennisHartrampf/udemy-angular-complete-guide-course-project"
+             target="_blank">
+            View Sources
+          </a>
+        </li>
         <li class="dropdown" appDropdown>
-          <a style="cursor:pointer;" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <a style="cursor:pointer;" class="dropdown-toggle" role="button">Manage <span
+              class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a style="cursor:pointer;">Save Data</a></li>
             <li><a style="cursor:pointer;">Load Data</a></li>
