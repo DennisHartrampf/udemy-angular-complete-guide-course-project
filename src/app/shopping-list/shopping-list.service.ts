@@ -9,6 +9,7 @@ export class ShoppingListService {
 
   ingredientsChanged = new Subject<Ingredient[]>();
   startedEditing = new Subject<number>();
+  stoppedEditing = new Subject<void>();
   
   private ingredients: Ingredient[] = [
     new Ingredient("Spaghetti", 500),
