@@ -27,16 +27,25 @@ export class ShoppingListService {
   
   addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
+    this.fireIngredientsChanged();
+  }
+
+  private fireIngredientsChanged() {
     this.ingredientsChanged.next(this.getIngredients());
   }
 
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients);
-    this.ingredientsChanged.next(this.getIngredients());
+    this.fireIngredientsChanged();
   }
 
   updateIngredient(index: number, newIngredient: Ingredient) {
     this.ingredients[index] = newIngredient;
-    this.ingredientsChanged.next(this.getIngredients());
+    this.fireIngredientsChanged();
+  }
+  
+  removeIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+    this.fireIngredientsChanged();
   }
 }

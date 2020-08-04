@@ -37,7 +37,10 @@
               (click)="onCancelEditing()"
               [disabled]="!form.value.name && !form.value.amount">Cancel
           </button>
-          <button class="btn btn-danger" disabled type="button">Delete</button>
+          <button 
+              class="btn btn-danger" 
+              [disabled]="!editMode" 
+              type="button" (click)="onDelete()">Delete</button>
         </div>
       </div>
     </form>
