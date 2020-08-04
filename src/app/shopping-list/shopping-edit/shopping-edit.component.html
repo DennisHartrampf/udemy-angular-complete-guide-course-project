@@ -1,42 +1,43 @@
 <div class="row">
   <div class="col-xs-12">
-    <form #form=ngForm (ngSubmit)="onSubmit(form)">
+    <form #form=ngForm (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-sm-5 form-group">
           <label for="name">Name</label>
-          <input 
-              type="text" 
-              id="name" 
-              name="name" 
-              class="form-control" 
-              ngModel 
+          <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              ngModel
               required>
         </div>
         <div class="col-sm-2 form-group">
           <label for="amount">Amount</label>
-          <input 
-              type="number" 
-              id="amount" 
-              name="amount" 
-              class="form-control" 
-              ngModel 
+          <input
+              type="number"
+              id="amount"
+              name="amount"
+              class="form-control"
+              ngModel
               required
               pattern="^[1-9]+\d*$">
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 btn-group-sm">
-          <button 
-              class="btn btn-success" 
-              type="submit" 
-              [disabled]="form.invalid">{{ editMode ? 'Update' : 'Add'}}</button>
-          <button 
-              class="btn btn-danger" 
+          <button
+              class="btn btn-success"
+              type="submit"
+              [disabled]="form.invalid">{{ editMode ? 'Update' : 'Add'}}
+          </button>
+          <button
+              class="btn btn-primary"
               type="button"
-              *ngIf="editMode"
-          (click)="onCancelEditing(form)">Cancel</button>
-          <button class="btn btn-danger" type="button">Delete</button>
-          <button class="btn btn-primary" type="button">Clear</button>
+              (click)="onCancelEditing()"
+              [disabled]="!form.value.name && !form.value.amount">Cancel
+          </button>
+          <button class="btn btn-danger" disabled type="button">Delete</button>
         </div>
       </div>
     </form>
