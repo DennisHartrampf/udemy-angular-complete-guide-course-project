@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core';
 import {Recipe} from "./recipe.model";
 import {Ingredient} from "../shared/ingredient.model";
 import {ShoppingListService} from "../shopping-list/shopping-list.service";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
 
+  recipesChanged = new Subject<Recipe[]>();
+  
   private recipes: Recipe[] = [
     new Recipe('Spaghetti Aglio e Olio', 
       'Sehr lecker!',
@@ -26,6 +29,11 @@ export class RecipeService {
         new Ingredient('Mushrooms', 10),
         new Ingredient('Cheese', 1),
       ]),
+    new Recipe('Ohne Zutaten', 
+      'Schmeckts nicht',
+      'https://www.bella-cucina.de/wp-content/uploads/2016/11/pizza-funghi.jpg',
+      []
+      ),
   ];
   
   constructor(private shoppingListService: ShoppingListService) { }
@@ -40,5 +48,19 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
+  }
+  
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.fireRecipesChanged();
+  }
+
+  private fireRecipesChanged() {
+    this.recipesChanged.next(this.getRecipes());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.fireRecipesChanged();
   }
 }
