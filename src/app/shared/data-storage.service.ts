@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RecipeService} from "../recipes/recipe.service";
 import {HttpClient} from "@angular/common/http";
 import {Recipe} from "../recipes/recipe.model";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,10 @@ export class DataStorageService {
   constructor(private httpClient: HttpClient, private recipeService: RecipeService) {
   }
 
+  private static replaceUndefinedIngredientsByEmptyArray(recipe: Recipe) {
+    return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []};
+  }
+
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
     this.httpClient.put(this.RECIPES_API_ENDPOINT, recipes).subscribe(
@@ -23,20 +27,18 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    this.httpClient
+    return this.httpClient
       .get<Recipe[]>(this.RECIPES_API_ENDPOINT)
-      .pipe(map(recipes => {
-        return recipes.map(recipe => {
-          return DataStorageService.replaceUndefinedIngredientsByEmptyArray(recipe)
-        });
-      }))
-      .subscribe(recipes => {
-        console.log(recipes);
-        this.recipeService.setRecipes(recipes);
-      })
-  }
-
-  private static replaceUndefinedIngredientsByEmptyArray(recipe: Recipe) {
-    return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []};
+      .pipe(
+        map(recipes => {
+          return recipes.map(recipe => {
+            return DataStorageService.replaceUndefinedIngredientsByEmptyArray(recipe)
+          });
+        }),
+        tap(recipes => {
+          console.log(recipes);
+          this.recipeService.setRecipes(recipes);
+        })
+      );
   }
 }
