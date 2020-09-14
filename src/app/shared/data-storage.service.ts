@@ -12,6 +12,9 @@ export class DataStorageService {
   private readonly RECIPES_API_ENDPOINT = 'https://udemy-angular-course-pro-7cf95.firebaseio.com/recipes.json';
 
   constructor(private httpClient: HttpClient, private recipeService: RecipeService) {
+    this.recipeService.recipesChanged.subscribe(() => {
+      this.storeRecipes();
+    });
   }
 
   private static replaceUndefinedIngredientsByEmptyArray(recipe: Recipe) {
@@ -20,10 +23,7 @@ export class DataStorageService {
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
-    this.httpClient.put(this.RECIPES_API_ENDPOINT, recipes).subscribe(
-      response => {
-        console.log(response);
-      });
+    this.httpClient.put(this.RECIPES_API_ENDPOINT, recipes).subscribe();
   }
 
   fetchRecipes() {
@@ -36,7 +36,6 @@ export class DataStorageService {
           });
         }),
         tap(recipes => {
-          console.log(recipes);
           this.recipeService.setRecipes(recipes);
         })
       );
